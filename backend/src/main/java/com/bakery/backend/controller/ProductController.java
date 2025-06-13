@@ -1,0 +1,41 @@
+package com.bakery.backend.controller;
+
+import com.bakery.backend.dto.ProductDTO;
+import com.bakery.backend.model.Image;
+import com.bakery.backend.model.Product;
+import com.bakery.backend.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/products")
+@CrossOrigin(origins = "http://localhost:5173") // Cho phép React truy cập API
+public class ProductController {
+
+    @Autowired
+    private ProductService productService;
+
+    // Lấy toàn bộ sản phẩm
+    @GetMapping
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
+    }
+
+    // Lấy 1 sản phẩm theo ID
+    @GetMapping("/{id}")
+    public Product getProductById(@PathVariable Long id) {
+        return productService.getProductById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm với ID: " + id));
+    }
+
+    // Xoá sản phẩm
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+    }
+
+    // ✅ Thêm mới sản phẩm
+
+}
