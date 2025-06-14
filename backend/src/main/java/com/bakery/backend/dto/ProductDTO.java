@@ -6,57 +6,26 @@ public class ProductDTO {
     private String name;
     private String description;
     private double price;
-    private String brandName;
-    private String categoryName;
+    private Long brandId;           // ✅ Thay bằng ID
+    private Long categoryId;        // ✅ Thay bằng ID
     private List<String> imageLinks;
 
-    // 👉 Tạo các getter và setter
+    // Getters & Setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public String getName() {
-        return name;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
 
-    public String getDescription() {
-        return description;
-    }
+    public Long getBrandId() { return brandId; }
+    public void setBrandId(Long brandId) { this.brandId = brandId; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public Long getCategoryId() { return categoryId; }
+    public void setCategoryId(Long categoryId) { this.categoryId = categoryId; }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getBrandName() {
-        return brandName;
-    }
-
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public List<String> getImageLinks() {
-        return imageLinks;
-    }
-
-    public void setImageLinks(List<String> imageLinks) {
-        this.imageLinks = imageLinks;
-    }
+    public List<String> getImageLinks() { return imageLinks; }
+    public void setImageLinks(List<String> imageLinks) { this.imageLinks = imageLinks; }
 }

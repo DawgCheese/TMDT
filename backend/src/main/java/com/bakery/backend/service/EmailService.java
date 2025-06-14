@@ -19,7 +19,7 @@ public class EmailService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-        helper.setFrom("Shopcake@heoid.online"); // 👈 Bắt buộc với Hostinger
+        helper.setFrom("20130374@st.hcmuaf.edu.vn"); // 👈 Bắt buộc với Hostinger
         helper.setTo(toEmail);
         helper.setSubject(subject);
         helper.setText(body, true);  // gửi HTML

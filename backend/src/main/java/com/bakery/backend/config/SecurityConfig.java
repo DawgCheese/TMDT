@@ -23,8 +23,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults()) // Mới thêm
                 .csrf(csrf -> csrf.disable())  // tắt CSRF
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login",
-                                "/api/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register", "/api/orders").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/products/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/products/**").permitAll()

@@ -5,17 +5,25 @@ import com.bakery.backend.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CategoryService {
 
     @Autowired
-    private CategoryRepository CategoryRepository;
+    private CategoryRepository categoryRepository;
 
-    public Category getOrCreateByName(String name) {
-        return CategoryRepository.findByName(name)
-                .orElseGet(() -> CategoryRepository.save(new Category(null, name)));
+    public Optional<Category> getCategoryById(Long id) {
+        return categoryRepository.findById(id);
     }
 
-    // Các hàm khác nếu cần (ví dụ: getAllBrands, deleteById...)
-}
+    // (Tuỳ chọn) Thêm category
+    public Category createCategory(Category category) {
+        return categoryRepository.save(category);
+    }
 
+    // (Tuỳ chọn) Lấy toàn bộ category
+    public Iterable<Category> getAllCategories() {
+        return categoryRepository.findAll();
+    }
+}
