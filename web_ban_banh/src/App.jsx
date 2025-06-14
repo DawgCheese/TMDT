@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import {Routes, Route, useLocation} from "react-router-dom";
 
 
 import Header from "./components/Header";
@@ -26,52 +26,51 @@ import SearchResultsPage from "./pages/SearchResultsPage";
 import AdminLayout from "./admin/AdminLayout.jsx";
 import Manage from "./admin/pages/Manage.jsx";
 import LoginAdmin from "./admin/LoginAdmin.jsx";
-
-
-
+import Statistic from "./admin/pages/Statistic.jsx";
 
 const App = () => {
-  const location = useLocation();
-  const hiddenAdsPaths = ["/pageadmin","/loginAdmin"]; // hoặc thêm các path khác nếu muốn ẩn header/footer
+    const location = useLocation();
+    const hiddenAdsPaths = ["/pageadmin", "/loginAdmin"]; // hoặc thêm các path khác nếu muốn ẩn header/footer
 
-  const shouldHideHeaderFooter = hiddenAdsPaths.includes(location.pathname);
+    const shouldHideHeaderFooter = hiddenAdsPaths.includes(location.pathname);
 
-  return (
-      <div className="flex flex-col min-h-screen">
-        {/* Chỉ hiển thị Header và Footer nếu không nằm trong hiddenAdsPaths */}
-        {!shouldHideHeaderFooter && <Header />}
+    return (
+        <div className="flex flex-col min-h-screen">
+            {/* Chỉ hiển thị Header và Footer nếu không nằm trong hiddenAdsPaths */}
+            {!shouldHideHeaderFooter && <Header/>}
 
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/product" element={<ProductPage />} />
-            <Route path="/product/:id" element={<ProductByIDPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/ve-chung-toi" element={<AboutUs />} />
-            <Route path="/dich-vu" element={<ServicePage />} />
-            <Route path="/lien-he" element={<ContactPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/cart-payment" element={<CartPayMent />} />
-            <Route path="/dat-hang-thanh-cong" element={<OrderSuccess />} />
-            <Route path="/order" element={<MyOrder />} />
-            <Route path="/quen-mat-khau" element={<ForgotPassword />} />
-            <Route path="/dat-mat-khau-moi" element={<NewPassword />} />
-            <Route path="/khong-tim-thay-trang" element={<NotFound />} />
-            <Route path="/danh-muc/:tag" element={<ProductTagPage />} />
-            <Route path="/tim-kiem" element={<SearchResultsPage />} />
-            <Route path="/loginAdmin" element={<LoginAdmin />} />
+            <main className="flex-grow">
+                <Routes>
+                    <Route path="/" element={<HomePage/>}/>
+                    <Route path="/product" element={<ProductPage/>}/>
+                    <Route path="/product/:id" element={<ProductByIDPage/>}/>
+                    <Route path="/login" element={<LoginPage/>}/>
+                    <Route path="/register" element={<RegisterPage/>}/>
+                    <Route path="/ve-chung-toi" element={<AboutUs/>}/>
+                    <Route path="/dich-vu" element={<ServicePage/>}/>
+                    <Route path="/lien-he" element={<ContactPage/>}/>
+                    <Route path="/cart" element={<CartPage/>}/>
+                    <Route path="/cart-payment" element={<CartPayMent/>}/>
+                    <Route path="/dat-hang-thanh-cong" element={<OrderSuccess/>}/>
+                    <Route path="/order" element={<MyOrder/>}/>
+                    <Route path="/quen-mat-khau" element={<ForgotPassword/>}/>
+                    <Route path="/dat-mat-khau-moi" element={<NewPassword/>}/>
+                    <Route path="/khong-tim-thay-trang" element={<NotFound/>}/>
+                    <Route path="/danh-muc/:tag" element={<ProductTagPage/>}/>
+                    <Route path="/tim-kiem" element={<SearchResultsPage/>}/>
+                    <Route path="/loginAdmin" element={<LoginAdmin/>}/>
 
-            <Route path="/pageadmin" element={<AdminLayout />}>
-              <Route index element={<Manage />} />
-              <Route path="pageadmin" element={<Manage />} />
-            </Route>
-          </Routes>
-        </main>
+                    <Route path="/pageadmin" element={<AdminLayout/>}>
+                        <Route index element={<Manage/>}/>
+                        <Route path="pageadmin" element={<Manage/>}/>
+                        <Route path="statistic" element={<Statistic/>}/>
+                    </Route>
+                </Routes>
+            </main>
 
-        {!shouldHideHeaderFooter && <Footer />}
-      </div>
-  );
+            {!shouldHideHeaderFooter && <Footer/>}
+        </div>
+    );
 };
 
 export default App;
