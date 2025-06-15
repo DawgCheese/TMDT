@@ -3,7 +3,6 @@ package com.bakery.backend.model;
 import jakarta.persistence.*;
 
 
-
 @Entity
 @Table(name = "account")
 public class Account {

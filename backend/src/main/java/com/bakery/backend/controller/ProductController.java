@@ -36,6 +36,15 @@ public class ProductController {
         productService.deleteProduct(id);
     }
 
-    // ✅ Thêm mới sản phẩm
+// ✅ Thêm mới sản phẩm
+@PostMapping
+public Product addProduct(@RequestBody ProductDTO productDTO) {
+    return productService.addProduct(productDTO);
+}
+    // ✅ Sửa sản phẩm
+    @PutMapping("/{id}")
+    public Product updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        return productService.updateProduct(id, productDTO);
+    }
 
 }
