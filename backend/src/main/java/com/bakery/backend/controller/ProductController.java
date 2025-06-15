@@ -1,9 +1,11 @@
 package com.bakery.backend.controller;
 
 import com.bakery.backend.dto.ProductDTO;
+import com.bakery.backend.dto.ProductResponseDTO;
 import com.bakery.backend.model.Product;
 import com.bakery.backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,6 +46,27 @@ public Product addProduct(@RequestBody ProductDTO productDTO) {
     @PutMapping("/{id}")
     public Product updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
         return productService.updateProduct(id, productDTO);
+    }
+    // API trả về danh sách sản phẩm mới nhất (sắp xếp giảm dần theo ID)
+    @GetMapping("/newest")
+    public List<ProductResponseDTO> getNewestProducts() {
+        return productService.getNewestProducts();
+    }
+    @GetMapping("/bestsellers")
+    public List<ProductResponseDTO> getBestSellingProducts() {
+        return productService.getBestSellingProducts();
+    }
+    @GetMapping("/{id}/view")
+    public ProductResponseDTO viewProduct(@PathVariable Long id) {
+        return productService.viewProduct(id);
+    }
+    @GetMapping("/most-viewed")
+    public List<ProductResponseDTO> getMostViewedProducts() {
+        return productService.getMostViewedProducts();
+    }
+    @GetMapping("/suggested/{productId}")
+    public ResponseEntity<List<ProductResponseDTO>> getSuggestedProducts(@PathVariable Long productId) {
+        return ResponseEntity.ok(productService.getSuggestedProductsByCategory(productId));
     }
 
 }
