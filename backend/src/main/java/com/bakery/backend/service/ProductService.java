@@ -22,11 +22,11 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private BrandService brandService;
-
-    @Autowired
-    private CategoryService categoryService;
+//    @Autowired
+//    private BrandService brandService;
+//
+//    @Autowired
+//    private CategoryService categoryService;
 
     @Autowired
     private ImageRepository imageRepository;

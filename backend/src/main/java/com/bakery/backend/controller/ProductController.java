@@ -1,7 +1,6 @@
 package com.bakery.backend.controller;
 
 import com.bakery.backend.dto.ProductDTO;
-import com.bakery.backend.model.Image;
 import com.bakery.backend.model.Product;
 import com.bakery.backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
