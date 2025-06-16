@@ -1,14 +1,12 @@
 package com.bakery.backend.service;
 
 import com.bakery.backend.dto.ProductDTO;
+import com.bakery.backend.dto.ProductResponseDTO;
 import com.bakery.backend.model.Brand;
 import com.bakery.backend.model.Category;
 import com.bakery.backend.model.Image;
 import com.bakery.backend.model.Product;
-import com.bakery.backend.repository.BrandRepository;
-import com.bakery.backend.repository.CategoryRepository;
-import com.bakery.backend.repository.ImageRepository;
-import com.bakery.backend.repository.ProductRepository;
+import com.bakery.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +20,11 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private BrandService brandService;
-
-    @Autowired
-    private CategoryService categoryService;
+//    @Autowired
+//    private BrandService brandService;
+//
+//    @Autowired
+//    private CategoryService categoryService;
 
     @Autowired
     private ImageRepository imageRepository;
@@ -36,6 +34,9 @@ public class ProductService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private OrderDetailRepository orderDetailRepository;
 
     // Lấy tất cả sản phẩm
     public List<Product> getAllProducts() {
@@ -121,7 +122,60 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    private ProductResponseDTO mapToDTO(Product product) {
+        ProductResponseDTO dto = new ProductResponseDTO();
+        dto.setId(product.getId());
+        dto.setName(product.getName());
+        dto.setDescription(product.getDescription());
+        dto.setPrice(product.getPrice());
+        dto.setBrandName(product.getBrand().getName());
+        dto.setCategoryName(product.getCategory().getName());
+        dto.setImageLinks(product.getImages().stream()
+                .map(Image::getImageLink)
+                .toList());
+        return dto;
+    }
+    public List<ProductResponseDTO> getNewestProducts() {
+        return productRepository.findAllByOrderByIdDesc().stream()
+                .map(this::mapToDTO)
+                .toList();
+    }
 
+
+    public List<ProductResponseDTO> getBestSellingProducts() {
+        return orderDetailRepository.findBestSellingProducts().stream()
+                .map(this::mapToDTO)
+                .toList();
+    }
+    public ProductResponseDTO viewProduct(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm"));
+
+        // Tăng lượt xem
+        product.setView(product.getView() != null ? product.getView() + 1 : 1);
+        productRepository.save(product);
+
+        return mapToDTO(product);
+    }
+    //10 san pham co view cao nhat
+    public List<ProductResponseDTO> getMostViewedProducts() {
+        return productRepository.findTop10ByOrderByViewDesc().stream()
+                .map(this::mapToDTO)
+                .toList();
+    }
+    public List<ProductResponseDTO> getSuggestedProductsByCategory(Long productId) {
+        // Tìm sản phẩm gốc
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm"));
+
+        // Lấy các sản phẩm cùng danh mục, loại trừ sản phẩm đang xem
+        List<Product> suggested = productRepository.findByCategoryAndIdNot(product.getCategory(), product.getId());
+
+        // Chuyển sang DTO
+        return suggested.stream()
+                .map(this::mapToDTO)
+                .toList();
+    }
 
 
 

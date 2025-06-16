@@ -24,10 +24,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())  // tắt CSRF
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register", "/api/orders").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/products/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/products/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/products/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/products/**","/api/categories/**","/api/brands/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/products/**","/api/categories/**","/api/brands/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/products/**","/api/categories/**","/api/brands/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/products/**","/api/categories/**","/api/brands/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )

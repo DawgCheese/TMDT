@@ -13,17 +13,30 @@ public class BrandService {
     @Autowired
     private BrandRepository brandRepository;
 
+    public Iterable<Brand> getAllBrands() {
+        return brandRepository.findAll();
+    }
+
     public Optional<Brand> getBrandById(Long id) {
         return brandRepository.findById(id);
     }
 
-    // (Tuỳ chọn) Thêm brand
     public Brand createBrand(Brand brand) {
         return brandRepository.save(brand);
     }
 
-    // (Tuỳ chọn) Lấy toàn bộ brand
-    public Iterable<Brand> getAllBrands() {
-        return brandRepository.findAll();
+    public Optional<Brand> updateBrand(Long id, Brand newBrand) {
+        return brandRepository.findById(id).map(brand -> {
+            brand.setName(newBrand.getName());
+            return brandRepository.save(brand);
+        });
+    }
+
+    public boolean deleteBrand(Long id) {
+        if (brandRepository.existsById(id)) {
+            brandRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
