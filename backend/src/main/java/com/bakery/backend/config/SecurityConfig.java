@@ -24,10 +24,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())  // tắt CSRF
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register", "/api/orders").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/products/**","/api/categories/**","/api/brands/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/products/**","/api/categories/**","/api/brands/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/products/**","/api/categories/**","/api/brands/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/products/**","/api/categories/**","/api/brands/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/products/**","/api/categories/**","/api/brands/**","/api/payment/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/products/**","/api/categories/**","/api/brands/**","/api/payment/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/products/**","/api/categories/**","/api/brands/**","/api/payment/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/products/**","/api/categories/**","/api/brands/**","/api/payment/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
