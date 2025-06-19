@@ -1,9 +1,6 @@
 package com.bakery.backend.service;
 
-import com.bakery.backend.dto.OrderItemDTO;
-import com.bakery.backend.dto.OrderItemResponseDTO;
-import com.bakery.backend.dto.OrderRequestDTO;
-import com.bakery.backend.dto.OrderResponseDTO;
+import com.bakery.backend.dto.*;
 import com.bakery.backend.model.*;
 import com.bakery.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,4 +78,37 @@ public class OrderService {
 
         return response;
     }
+    public List<OrderHistoryResponseDTO> getOrderHistoryByAccountId(Long accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy tài khoản"));
+
+        List<Order> orders = orderRepository.findByAccount(account);
+        List<OrderHistoryResponseDTO> result = new ArrayList<>();
+
+        for (Order order : orders) {
+            List<OrderHistoryItemDTO> items = new ArrayList<>();
+
+            for (OrderDetail detail : order.getOrderDetails()) {
+                Product product = detail.getProduct();
+                items.add(new OrderHistoryItemDTO(
+                        product.getId(),
+                        product.getName(),
+                        detail.getQuantity(),
+                        detail.getPrice()
+                ));
+            }
+
+            result.add(new OrderHistoryResponseDTO(
+                    order.getId(),
+                    order.getCreateDate(),
+                    order.getTotal(),
+                    order.getOrderStatus().getName(),
+                    order.getAddress(),
+                    items
+            ));
+        }
+
+        return result;
+    }
+
 }
