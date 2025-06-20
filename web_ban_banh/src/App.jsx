@@ -30,7 +30,7 @@ import Statistic from "./admin/pages/Statistic.jsx";
 
 const App = () => {
     const location = useLocation();
-    const hiddenAdsPaths = ["/pageadmin", "/loginAdmin"]; // hoặc thêm các path khác nếu muốn ẩn header/footer
+    const hiddenAdsPaths = ["/pageadmin", "/loginAdmin", "/pageadmin/statistic"]; // hoặc thêm các path khác nếu muốn ẩn header/footer
 
     const shouldHideHeaderFooter = hiddenAdsPaths.includes(location.pathname);
 
