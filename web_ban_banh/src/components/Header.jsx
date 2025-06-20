@@ -146,6 +146,7 @@ const Header = () => {
               {showDropdown && username && (
                   <div className="absolute top-full right-0 mt-2 w-40 bg-white shadow rounded p-2 text-sm z-50">
                     <div className="px-2 py-1 font-medium border-b">{username}</div>
+                    <Link to="/orders">Lịch sử đơn hàng</Link>
                     <button
                         onClick={handleLogout}
                         className="w-full text-left px-2 py-1 text-red-600 hover:bg-red-50"

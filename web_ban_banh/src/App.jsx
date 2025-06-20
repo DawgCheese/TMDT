@@ -21,7 +21,7 @@ import NewPassword from './pages/NewPassword';
 import NotFound from './pages/NotFound';
 import ProductTagPage from './pages/ProductTagPage';
 import SearchResultsPage from "./pages/SearchResultsPage";
-
+import OrderHistory from './pages/OrderHistory';
 //Admin
 import AdminLayout from "./admin/AdminLayout.jsx";
 import Manage from "./admin/pages/Manage.jsx";
@@ -59,6 +59,7 @@ const App = () => {
                     <Route path="/danh-muc/:tag" element={<ProductTagPage/>}/>
                     <Route path="/tim-kiem" element={<SearchResultsPage/>}/>
                     <Route path="/loginAdmin" element={<LoginAdmin/>}/>
+                       <Route path="/orders" element={<OrderHistory />} />
 
                     <Route path="/pageadmin" element={<AdminLayout/>}>
                         <Route index element={<Manage/>}/>

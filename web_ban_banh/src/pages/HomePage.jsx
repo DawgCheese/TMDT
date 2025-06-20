@@ -1,6 +1,7 @@
-  import React from "react";
-  import { Link } from "react-router-dom";
-  import { useProducts } from "../contextApi/ProductContext";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { useProducts } from "../contextApi/ProductContext";
 
   // Danh mục tĩnh
   const categories = [
@@ -9,9 +10,47 @@
     { title: "Bánh mì", img: "/src/assets/img/banh9.png", desc: "Mềm, thịt nguội, rau, bơ, trứng." },
     { title: "Sandwich", img: "/src/assets/img/banh3.png", desc: "Thịt nguội, rau, phô mai, nướng." },
   ];
+const ProductCard = ({ product }) => (
+  <Link to={`/product/${product.id}`}>
+    <div className="bg-white rounded shadow p-4 hover:shadow-lg transition">
+      <img
+        src={product.imageLinks?.[0] || "/default.png"}
+        alt={product.name}
+        className="w-full h-40 object-cover mb-2"
+      />
 
+      <h3 className="text-lg font-semibold">{product.name}</h3>
+      <p className="text-red-500 font-bold">{product.price.toLocaleString()}₫</p>
+    </div>
+  </Link>
+);
   const HomePage = () => {
     const { products } = useProducts(); // Lấy danh sách sản phẩm từ context
+
+  const [newest, setNewest] = useState([]);
+  const [bestsellers, setBestsellers] = useState([]);
+  const [mostViewed, setMostViewed] = useState([]);
+  const [suggested, setSuggested] = useState([]);
+
+ useEffect(() => {
+   const fetchAll = async () => {
+     try {
+       const [res1, res2, res3, res4] = await Promise.all([
+         axios.get("http://localhost:8080/api/products/newest"),
+         axios.get("http://localhost:8080/api/products/bestsellers"),
+         axios.get("http://localhost:8080/api/products/most-viewed"),
+         axios.get("http://localhost:8080/api/products/suggested/1"),
+       ]);
+       setNewest(res1.data.slice(0, 8)); // <-- thêm slice tại đây
+       setBestsellers(res2.data.slice(0, 8));
+       setMostViewed(res3.data.slice(0, 8));
+       setSuggested(res4.data.slice(0, 8));
+     } catch (err) {
+       console.error("Lỗi khi load sản phẩm:", err);
+     }
+   };
+   fetchAll();
+ }, []);
 
     return (
         <div className="container mx-auto px-4 font-sans p-8 bg-white">
@@ -97,7 +136,7 @@
               Đặt hàng nhanh chóng và chọn những gì bạn thích từ nhiều danh mục.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 mb-4">
-              {products.slice(0, 12).map((prod, i) => (
+              {products.slice(0, 8).map((prod, i) => (
                   <Link to={`/product/${prod.id}`} key={i}>
                     <div className="bg-gray-100 rounded-xl p-4 shadow-md hover:-translate-y-1 transition-transform">
                       <img
@@ -162,6 +201,35 @@
             </button>
           </div>
         </section>
+  {/* Sản phẩm mới nhất */}
+  <section>
+    <h2 className="text-xl font-bold mb-2">Sản phẩm mới nhất</h2>
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {newest.slice(0, 8).map((p) => (
+        <ProductCard key={p.id} product={p} />
+      ))}
+    </div>
+  </section>
+
+  {/* Bán chạy */}
+  <section>
+    <h2 className="text-xl font-bold mb-2">Bán chạy</h2>
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {bestsellers.slice(0, 8).map((p) => (
+        <ProductCard key={p.id} product={p} />
+      ))}
+    </div>
+  </section>
+
+  {/* Xem nhiều */}
+  <section>
+    <h2 className="text-xl font-bold mb-2">Xem nhiều</h2>
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {mostViewed.slice(0, 8).map((p) => (
+        <ProductCard key={p.id} product={p} />
+      ))}
+    </div>
+  </section>
 
         {/* Vị trí cửa hàng Section */}
         <section className="bg-white py-16 px-4 md:px-12">

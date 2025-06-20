@@ -24,18 +24,25 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())  // tắt CSRF
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register", "/api/orders").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/products/**","/api/categories/**","/api/brands/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/products/**","/api/categories/**","/api/brands/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/products/**","/api/categories/**","/api/brands/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/products/**","/api/categories/**","/api/brands/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/products/**","/api/categories/**","/api/brands/**","/api/payment/**","/api/orders/**","/api/account/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/products/**","/api/categories/**","/api/brands/**","/api/payment/**","/api/orders/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/products/**","/api/categories/**","/api/brands/**","/api/payment/**","/api/account/**","/api/orders/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/products/**","/api/categories/**","/api/brands/**","/api/payment/**","/api/orders/**").permitAll()
+
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults());  // kích hoạt http basic
+
+                .httpBasic(Customizer.withDefaults()) // sử dụng HTTP Basic Auth
+                .securityContext(context -> context
+                        .requireExplicitSave(false) // ✅ KHÔNG bị lỗi ở Spring Security >= 6.1
+                )
+                .sessionManagement(session -> session
+                        .maximumSessions(1) // ✅ Optional: giới hạn 1 session/user
+                );
 
         return http.build();
     }
-
     // Thêm bean PasswordEncoder
     @Bean
     public PasswordEncoder passwordEncoder() {
