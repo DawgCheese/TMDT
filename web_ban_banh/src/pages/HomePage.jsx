@@ -14,10 +14,11 @@ const ProductCard = ({ product }) => (
   <Link to={`/product/${product.id}`}>
     <div className="bg-white rounded shadow p-4 hover:shadow-lg transition">
       <img
-        src={product.images?.[0]?.imageLink || "/default.png"}
+        src={product.imageLinks?.[0] || "/default.png"}
         alt={product.name}
         className="w-full h-40 object-cover mb-2"
       />
+
       <h3 className="text-lg font-semibold">{product.name}</h3>
       <p className="text-red-500 font-bold">{product.price.toLocaleString()}₫</p>
     </div>
