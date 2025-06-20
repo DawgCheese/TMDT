@@ -108,12 +108,11 @@ const ProductByIDPage = () => {
                key={related.id}
                className="border rounded-2xl overflow-hidden bg-white hover:shadow-md transition"
              >
-          <img
-            src={related.imageLinks?.[0] || "/default.png"}
-            alt={related.name}
-            className="w-full h-48 object-cover"
-          />
-
+               <img
+                 src={related.images?.[0]?.imageLink || "/default.png"}
+                 alt={related.name}
+                 className="w-full h-48 object-cover"
+               />
                <div className="p-4 text-center">
                  <h3 className="font-bold">{related.name}</h3>
                  <p className="text-gray-600">

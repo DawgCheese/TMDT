@@ -1,9 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useLocation, Link } from "react-router-dom";
 import { FaCheckCircle } from 'react-icons/fa';
 import PageHeader from "../components/PageHeader";
 
 const OrderSuccess = () => {
+
+const location = useLocation();
+const query = new URLSearchParams(location.search);
+const orderId = query.get("orderId")
   return (
     <div className="relative">
          {/* Header Section */}
@@ -24,9 +28,10 @@ const OrderSuccess = () => {
           <Link to="/" className="bg-[#d9604c] text-white px-6 py-2 rounded-full font-semibold hover:opacity-90">
             Tiếp tục mua sắm
           </Link>
-          <Link to="/order" className="text-sm text-[#6f7875] underline hover:text-[#d9604c]">
-            Xem đơn hàng của bạn
-          </Link>
+       <Link to={`/order/${orderId}`} className="text-sm text-[#6f7875] underline hover:text-[#d9604c]">
+         Xem đơn hàng của bạn
+       </Link>
+
         </div>
       </div>
     </div>

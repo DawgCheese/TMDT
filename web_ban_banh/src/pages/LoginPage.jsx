@@ -32,10 +32,7 @@ const LoginPage = () => {
     setErrorMsg("");
 
     try {
-     const res = await axios.post("http://localhost:8080/api/auth/login", formData, {
-       withCredentials: true, // ✅ để gửi và lưu cookie JSESSIONID
-     });
-
+      const res = await axios.post("http://localhost:8080/api/auth/login", formData);
       const { username, token } = res.data;
 
       // Lưu thông tin vào localStorage
