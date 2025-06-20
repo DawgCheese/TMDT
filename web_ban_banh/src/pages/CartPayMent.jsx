@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageHeader from "../components/PageHeader";
@@ -73,6 +74,7 @@ navigate(`/dat-hang-thanh-cong?orderId=${orderId}`);
     alert("Đặt hàng hoặc thanh toán thất bại. Vui lòng thử lại.");
   }
 };
+
 
 
   if (loading) return <div className="p-6 text-center">Đang tải thông tin người dùng...</div>;
@@ -188,20 +190,19 @@ navigate(`/dat-hang-thanh-cong?orderId=${orderId}`);
             <div className="flex justify-between font-bold text-base mt-2">
               <span>Tổng đơn hàng:</span>
               <span>{total.toLocaleString()}đ</span>
+
             </div>
-          </div>
 
           <div className="text-xs text-gray-600 mt-4 space-y-1">
             <p>*Lưu ý: Bạn sẽ nhận hàng trong vòng 1-2 ngày làm việc.</p>
             <p>*Yêu cầu khác có thể được ghi chú ở mục phía trên.</p>
             <div className="bg-[#f1e998] text-black rounded p-2 mt-2 inline-flex items-center gap-2">
               🚚 Thời gian nhận hàng: dự kiến 1-2 ngày
+
             </div>
           </div>
         </div>
-
       </div>
-    </div>
   );
 };
 
