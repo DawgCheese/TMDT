@@ -21,16 +21,18 @@ import NewPassword from './pages/NewPassword';
 import NotFound from './pages/NotFound';
 import ProductTagPage from './pages/ProductTagPage';
 import SearchResultsPage from "./pages/SearchResultsPage";
+import OrderHistory from './pages/OrderHistory';
+import PaymentFail from './pages/PaymentFail';
 
 //Admin
 import AdminLayout from "./admin/AdminLayout.jsx";
 import Manage from "./admin/pages/Manage.jsx";
 import LoginAdmin from "./admin/LoginAdmin.jsx";
 import Statistic from "./admin/pages/Statistic.jsx";
-
+import EditAccountPage from './pages/EditAccountPage';
 const App = () => {
     const location = useLocation();
-    const hiddenAdsPaths = ["/pageadmin", "/loginAdmin", "/pageadmin/statistic"]; // hoặc thêm các path khác nếu muốn ẩn header/footer
+    const hiddenAdsPaths = ["/pageadmin", "/loginAdmin"]; // hoặc thêm các path khác nếu muốn ẩn header/footer
 
     const shouldHideHeaderFooter = hiddenAdsPaths.includes(location.pathname);
 
@@ -59,7 +61,10 @@ const App = () => {
                     <Route path="/danh-muc/:tag" element={<ProductTagPage/>}/>
                     <Route path="/tim-kiem" element={<SearchResultsPage/>}/>
                     <Route path="/loginAdmin" element={<LoginAdmin/>}/>
-
+                     <Route path="/orders" element={<OrderHistory />} />
+                     <Route path="/cap-nhat-thong-tin" element={<EditAccountPage />} />
+                        <Route path="/thanh-toan-that-bai" element={<PaymentFail />} />
+                        <Route path="/order/:orderId" element={<MyOrder />} />
                     <Route path="/pageadmin" element={<AdminLayout/>}>
                         <Route index element={<Manage/>}/>
                         <Route path="pageadmin" element={<Manage/>}/>

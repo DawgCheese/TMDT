@@ -6,6 +6,7 @@ import com.bakery.backend.model.OrderStatus;
 import com.bakery.backend.repository.OrderRepository;
 import com.bakery.backend.repository.OrderStatusRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.payos.PayOS;
@@ -13,8 +14,10 @@ import vn.payos.type.CheckoutResponseData;
 import vn.payos.type.ItemData;
 import vn.payos.type.PaymentData;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -69,7 +72,7 @@ public class CheckoutController {
 
             CheckoutResponseData data = payOS.createPaymentLink(paymentData);
 
-            return ResponseEntity.ok().body(data.getCheckoutUrl());
+            return ResponseEntity.ok().body(Map.of("url", data.getCheckoutUrl()));
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Lỗi khi tạo link thanh toán: " + e.getMessage());
@@ -77,17 +80,21 @@ public class CheckoutController {
     }
     // ✅ 2. Xử lý thành công
     @GetMapping("/success")
-    public ResponseEntity<?> handlePaymentSuccess(@RequestParam("orderId") Long orderId) {
-        ResponseEntity<?> response = updateOrderStatus(orderId, "confirmed");
-        return ResponseEntity.ok("✅ Thanh toán thành công cho đơn hàng ID: " + orderId);
+    public void handlePaymentSuccess(@RequestParam("orderId") Long orderId,
+                                     HttpServletResponse response) throws IOException {
+        updateOrderStatus(orderId, "confirmed");
+        response.sendRedirect("http://localhost:5173/dat-hang-thanh-cong?orderId=" + orderId);
+
     }
+
 
     // ✅ 3. Xử lý hủy thanh toán
     @GetMapping("/cancel")
-    public ResponseEntity<?> handlePaymentCancel(@RequestParam("orderId") Long orderId) {
-        ResponseEntity<?> response = updateOrderStatus(orderId, "cancelled");
-        return ResponseEntity.ok("❌ Thanh toán bị hủy cho đơn hàng ID: " + orderId);
+    public void handlePaymentCancel(@RequestParam("orderId") Long orderId, HttpServletResponse response) throws IOException {
+        updateOrderStatus(orderId, "cancelled");
+        response.sendRedirect("http://localhost:5173/thanh-toan-that-bai");
     }
+
 
     // ✅ 4. Hàm cập nhật trạng thái đơn hàng
     private ResponseEntity<?> updateOrderStatus(Long orderId, String statusName) {
