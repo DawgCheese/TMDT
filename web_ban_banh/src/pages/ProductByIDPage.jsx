@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useProducts } from "../contextApi/ProductContext";
 import { useCart } from "../contextApi/CartContext";
+import axios from "axios";
 
 const ProductByIDPage = () => {
   const { id } = useParams();
@@ -11,6 +12,25 @@ const ProductByIDPage = () => {
 
   const product = products.find((p) => p.id === parseInt(id));
   const [quantity, setQuantity] = useState(1);
+ const [suggestedProducts, setSuggestedProducts] = useState([]);
+ useEffect(() => {
+   if (!id) return;
+
+   const fetchData = async () => {
+     try {
+       // Gọi API suggested products
+       const res = await axios.get(`http://localhost:8080/api/products/suggested/${id}`);
+       setSuggestedProducts(res.data);
+
+       // Gọi API tăng lượt xem
+       await axios.get(`http://localhost:8080/api/products/${id}/view`);
+     } catch (error) {
+       console.error("Lỗi khi tải dữ liệu sản phẩm hoặc tăng lượt xem:", error);
+     }
+   };
+
+   fetchData();
+ }, [id]);
 
   if (!product) {
     return (
@@ -78,45 +98,37 @@ const ProductByIDPage = () => {
           <p>{product.longDescription || "Chưa có mô tả chi tiết cho sản phẩm này."}</p>
         </div>
 
-        {/* Sản phẩm liên quan */}
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Sản Phẩm Liên Quan</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {products
-                .filter(
-                    (p) =>
-                        p.id !== product.id &&
-                        p.tags?.some((tag) => product.tags?.includes(tag))
-                )
-                .slice(0, 4)
-                .map((related) => (
-                    <Link
-                        to={`/product/${related.id}`}
-                        key={related.id}
-                        className="border rounded-2xl overflow-hidden bg-white hover:shadow-md transition"
-                    >
-                      <img
-                          src={related.image}
-                          alt={related.name}
-                          className="w-full h-48 object-cover"
-                      />
-                      <div className="p-4 text-center">
-                        <h3 className="font-bold">{related.name}</h3>
-                        <p className="text-gray-600">
-                          {related.caloriesPerServing
-                              ? `${related.caloriesPerServing}₫`
-                              : "Liên hệ"}
-                        </p>
-                        <div className="text-yellow-400">
-                          {"★".repeat(Math.round(related.rating || 0))}
-                        </div>
-                      </div>
-                    </Link>
-                ))}
-          </div>
-        </div>
-      </div>
-  );
-};
-
+  {/* Sản phẩm liên quan */}
+       <div className="mt-8">
+         <h2 className="text-2xl font-bold mb-4">Sản Phẩm Liên Quan</h2>
+         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+           {suggestedProducts.slice(0, 4).map((related) => (
+             <Link
+               to={`/product/${related.id}`}
+               key={related.id}
+               className="border rounded-2xl overflow-hidden bg-white hover:shadow-md transition"
+             >
+               <img
+                 src={related.images?.[0]?.imageLink || "/default.png"}
+                 alt={related.name}
+                 className="w-full h-48 object-cover"
+               />
+               <div className="p-4 text-center">
+                 <h3 className="font-bold">{related.name}</h3>
+                 <p className="text-gray-600">
+                   {related.price
+                     ? `${related.price.toLocaleString("vi-VN")}₫`
+                     : "Liên hệ"}
+                 </p>
+                 <div className="text-yellow-400">
+                   {"★".repeat(Math.round(related.rating || 0))}
+                 </div>
+               </div>
+             </Link>
+           ))}
+         </div>
+       </div>
+     </div>
+   );
+ };
 export default ProductByIDPage;
